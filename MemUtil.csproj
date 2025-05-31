@@ -5,6 +5,18 @@
         <ImplicitUsings>enable</ImplicitUsings>
         <Nullable>enable</Nullable>
         <LangVersion>latest</LangVersion>
+        <AssemblyName>MemUtils</AssemblyName>
+        <NeutralLanguage>en</NeutralLanguage>
+    </PropertyGroup>
+
+    <PropertyGroup Condition=" '$(Configuration)' == 'Debug' ">
+      <DocumentationFile>bin\Debug\MemUtil.xml</DocumentationFile>
+      <NoWarn>1701;1702;CS1591;CS8618</NoWarn>
+    </PropertyGroup>
+
+    <PropertyGroup Condition=" '$(Configuration)' == 'Release' ">
+      <DocumentationFile>bin\Release\MemUtil.xml</DocumentationFile>
+      <NoWarn>1701;1702;CS1591;CS8618</NoWarn>
     </PropertyGroup>
 
 </Project>
