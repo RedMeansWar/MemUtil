@@ -20,6 +20,7 @@ The author is not responsible for any misuse of this library.
 ******************************************************************************/
 
 using System;
+using System.Globalization;
 
 namespace MemUtil.Utils;
 
@@ -154,5 +155,29 @@ public static class ByteConverter
         }
         
         return BitConverter.ToInt16(buffer, 0);
+    }
+
+    /// <summary>
+    /// Attempts to parse a hexadecimal string into an <see cref="IntPtr"/> address.
+    /// </summary>
+    /// <param name="hex">The hexadecimal string to be parsed, which may optionally start with "0x".</param>
+    /// <param name="address">The parsed <see cref="IntPtr"/> value if the conversion succeeds, or <see cref="IntPtr.Zero"/> if it fails.</param>
+    /// <returns>True if the string was successfully parsed into an <see cref="IntPtr"/> value; otherwise, false.</returns>
+    public static bool TryParseHexAddress(string hex, out IntPtr address)
+    {
+        address = IntPtr.Zero;
+        if (string.IsNullOrWhiteSpace(hex))
+            return false;
+
+        hex = hex.Trim();
+
+        if (hex.StartsWith("0x", StringComparison.OrdinalIgnoreCase))
+            hex = hex.Substring(2);
+
+        if (!ulong.TryParse(hex, NumberStyles.HexNumber, null, out ulong result)) return false;
+        
+        address = new(unchecked((long)result));
+        return true;
+
     }
 }

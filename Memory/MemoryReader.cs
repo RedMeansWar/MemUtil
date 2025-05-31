@@ -33,8 +33,10 @@ namespace MemUtil.Memory;
 /// </summary>
 public class MemoryReader : IMemoryReader
 {
-    internal readonly IntPtr _processHandle;
+    internal IntPtr _processHandle;
 
+    public MemoryReader() {}
+    
     /// <summary>
     /// Provides functionality for reading memory from an external process.
     /// </summary>
@@ -159,5 +161,16 @@ public class MemoryReader : IMemoryReader
         {
             NativeMethods.CloseHandle(_processHandle);
         }
+    }
+
+    public bool Attach(int processId)
+    {
+        _processHandle = NativeMethods.OpenProcess(
+            ProcessAccessFlags.VirtualMemoryRead | ProcessAccessFlags.QueryInformation,
+            false,
+            processId
+        );
+
+        return _processHandle != IntPtr.Zero;
     }
 }

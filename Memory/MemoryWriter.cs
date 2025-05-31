@@ -33,7 +33,7 @@ namespace MemUtil.Memory;
 /// </summary>
 public class MemoryWriter : IMemoryWriter
 {
-    internal readonly IntPtr _processHandle;
+    internal IntPtr _processHandle;
 
     /// <summary>
     /// Provides functionality to write data into the memory of an external process.
@@ -54,6 +54,8 @@ public class MemoryWriter : IMemoryWriter
             throw new Exception("Failed to open process.");
         }
     }
+    
+    public MemoryWriter() { }
 
     /// <summary>
     /// Writes an array of bytes to the specified memory address in the target process.
