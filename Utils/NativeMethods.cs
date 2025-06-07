@@ -29,7 +29,7 @@ namespace MemUtil.Utils;
 internal static class NativeMethods
 {
     [DllImport("kernel32.dll", SetLastError = true)]
-    public static extern IntPtr OpenProcess(ProcessAccessFlags dwDesiredAccess, bool bInheritHandle, int processId);
+    public static extern nint OpenProcess(ProcessAccessFlags dwDesiredAccess, bool bInheritHandle, int processId); // nint = IntPtr
     
     [DllImport("kernel32.dll", SetLastError = true)]
     public static extern bool ReadProcessMemory(IntPtr hProcess, IntPtr lpBaseAddress, [Out] byte[] lpBuffer, int dwSize, out IntPtr lpNumberOfBytesRead);

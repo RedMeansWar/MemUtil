@@ -26,7 +26,24 @@ namespace MemUtil.Processes;
 
 public static class ProcessUtils
 {
+    /// <summary>
+    /// Represents the currently attached process.
+    /// This property allows access to the process object that the utility is currently interacting with.
+    /// </summary>
+    /// <remarks>
+    /// The process is set when the <see cref="AttachToProcess(string)"/> method is successfully called.
+    /// The property will be null if no process has been attached.
+    /// </remarks>
     public static Process Process { get; private set; }
+
+    /// <summary>
+    /// Represents the base address of the main module of the currently attached process.
+    /// </summary>
+    /// <remarks>
+    /// This property provides the memory base address of the main module of the process
+    /// that has been successfully attached using the <see cref="AttachToProcess(string)"/> method.
+    /// If no process is attached or the main module is unavailable, the value will be set to zero.
+    /// </remarks>
     public static IntPtr BaseAddress { get; private set; }
 
     /// <summary>
@@ -38,13 +55,15 @@ public static class ProcessUtils
     /// </returns>
     public static bool AttachToProcess(string processName)
     {
+        // get a list of all processes with the specified name
         var processes = Process.GetProcessesByName(processName);
         if (processes.Length == 0)
-            return false;
+            return false; // return false if there are no process ids with the specified name
 
+        // set the process to the first process with the specified name
         Process = processes[0];
-        BaseAddress = Process.MainModule?.BaseAddress ?? IntPtr.Zero;
-        return true;
+        BaseAddress = Process.MainModule?.BaseAddress ?? nint.Zero; //  set the base address to the main module's base address'
+        return true; // return true if the process was successfully attached
     }
 
     /// <summary>
@@ -56,10 +75,12 @@ public static class ProcessUtils
     /// </returns>
     public static int? GetProcessIdByName(string processName)
     {
+        // get a list of all processes with the specified name
         var processes = Process.GetProcessesByName(processName);
-        if (processes.Length == 0)
-            return null;
+        if (processes.Length == 0) // if there are no process ids with the specified name
+            return null; // return null
         
+        // return the process id of the first process with the specified name
         return processes[0].Id;
     }
 }

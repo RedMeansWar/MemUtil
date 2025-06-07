@@ -53,11 +53,11 @@ public static class ByteConverter
     /// <exception cref="ArgumentException">Thrown if the byte array is null or contains fewer than 4 bytes.</exception>
     public static uint ToUInt32(byte[] buffer)
     {
+        // check if the buffer is null or too small
         if (buffer is null || buffer.Length < 4)
-        {
-            throw new ArgumentException("Buffer is too small for UInt32.");
-        }
+            throw new ArgumentException("Buffer is too small for UInt32."); // throw an exception if the buffer is null or too small
         
+        // convert the buffer to a UInt32 value
         return BitConverter.ToUInt32(buffer, 0);
     }
 
@@ -69,11 +69,11 @@ public static class ByteConverter
     /// <exception cref="ArgumentException">Thrown if the byte array is null or contains fewer than 8 bytes.</exception>
     public static uint ToUInt64(byte[] buffer)
     {
+        // check if the buffer is null or too small
         if (buffer is null || buffer.Length < 8)
-        {
-            throw new ArgumentException("Buffer is too small for UInt64.");
-        }
+            throw new ArgumentException("Buffer is too small for UInt64."); // throw an exception if the buffer is null or too small
         
+        // convert the buffer to a UInt64 value
         return (uint)BitConverter.ToUInt64(buffer, 0);
     }
 
@@ -101,11 +101,11 @@ public static class ByteConverter
     /// <exception cref="ArgumentException">Thrown if the byte array is null or contains fewer than 8 bytes.</exception>
     public static long ToInt64(byte[] buffer)
     {
+        // check if the buffer is null or too small
         if (buffer is null || buffer.Length < 8)
-        {
-            throw new ArgumentException("Buffer is too small for Int64.");
-        }
+            throw new ArgumentException("Buffer is too small for Int64."); // throw an exception if the buffer is null or too small
         
+        // convert the buffer to an Int64 value
         return BitConverter.ToInt64(buffer, 0);
     }
 
@@ -117,11 +117,10 @@ public static class ByteConverter
     /// <exception cref="ArgumentException">Thrown if the byte array is null or contains fewer than 4 bytes.</exception>
     public static float ToFloat(byte[] buffer)
     {
-        if (buffer is null || buffer.Length < 4)
-        {
-            throw new ArgumentException("Buffer is too small for Single (float).");
-        }
+        if (buffer is null || buffer.Length < 4) // check if the buffer is null or too small
+            throw new ArgumentException("Buffer is too small for Single (float)."); // throw an exception if the buffer is null or too small
         
+        // convert the buffer to a float value
         return BitConverter.ToSingle(buffer, 0);
     }
 
@@ -149,11 +148,10 @@ public static class ByteConverter
     /// <exception cref="ArgumentException">Thrown if the byte array is null or contains fewer than 2 bytes.</exception>
     public static short ToInt16(byte[] buffer)
     {
-        if (buffer is null || buffer.Length < 2)
-        {
-            throw new ArgumentException("Buffer is too small for Int16.");
-        }
+        if (buffer is null || buffer.Length < 2) // check if the buffer is null or too small
+            throw new ArgumentException("Buffer is too small for Int16."); // throw an exception if the buffer is null or too small
         
+        // convert the buffer to an Int16 value
         return BitConverter.ToInt16(buffer, 0);
     }
 
@@ -165,19 +163,26 @@ public static class ByteConverter
     /// <returns>True if the string was successfully parsed into an <see cref="IntPtr"/> value; otherwise, false.</returns>
     public static bool TryParseHexAddress(string hex, out IntPtr address)
     {
-        address = IntPtr.Zero;
+        // set the default value to IntPtr.Zero
+        address = nint.Zero;
+        
+        // check if the string is null or empty
         if (string.IsNullOrWhiteSpace(hex))
-            return false;
+            return false; // return false if the string is null or empty
 
+        // trim the string and remove the "0x" prefix, if present
         hex = hex.Trim();
 
+        // check if the string starts with "0x"
         if (hex.StartsWith("0x", StringComparison.OrdinalIgnoreCase))
-            hex = hex.Substring(2);
+            hex = hex.Substring(2); // remove the "0x" prefix
 
-        if (!ulong.TryParse(hex, NumberStyles.HexNumber, null, out ulong result)) return false;
+        // check if the string is a valid hexadecimal number
+        if (!ulong.TryParse(hex, NumberStyles.HexNumber, null, out ulong result))
+            return false; // return false if the string is not a valid hexadecimal number
         
+        // convert the hexadecimal number to an IntPtr value
         address = new(unchecked((long)result));
-        return true;
-
+        return true; // return true if the string was successfully parsed into an IntPtr value
     }
 }
